@@ -1,6 +1,12 @@
 # AtCoder Problem API
 
-AtCoderの問題データを取得するためのAPI。[kenkoooo.com](https://kenkoooo.com/atcoder/)のデータを元に、条件に応じて問題をフィルタリングして取得できます。
+AtCoderの問題データを取得するためのAPIです。kenkoooo様の[AtCoder Problems](https://kenkoooo.com/atcoder/)が提供するデータを元に、条件に応じて問題をフィルタリングして取得できます。
+
+## URL
+
+```
+https://node-api-for-atcoder.vercel.app
+```
 
 ## エンドポイント
 
@@ -135,7 +141,7 @@ GET /problems?contest=arc&problem=c&limit=5&random=true
 
 ## データソース
 
-問題データは [AtCoder Problems](https://kenkoooo.com/atcoder/) から取得しています。
+問題データは [AtCoder Problems](https://kenkoooo.com/atcoder/) が提供している以下のAPIから取得しています。
 
 ```
 https://kenkoooo.com/atcoder/resources/problem-models.json
