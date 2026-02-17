@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/problems",
+      "destination": "/api/problems"
+    }
+  ]
+}
