@@ -4,15 +4,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    // パスパラメータとクエリパラメータを取得
-    const { contestType } = req.query;
-    const { min, max, problem } = req.query;
+    //クエリパラメータを取得
+    const { contest, min, max, problem } = req.query;
 
+    const contestType = contest ? contest.toLowerCase() : 'all';
     // コンテストタイプのバリデーション
     const validContestTypes = ['abc', 'arc', 'agc', 'all'];
-    const type = contestType?.toLowerCase();
     
-    if (!type || !validContestTypes.includes(type)) {
+    if (!validContestTypes.includes(contestType)) {
       return res.status(400).json({ 
         error: 'Invalid contest type',
         message: 'Contest type must be one of: abc, arc, agc, all'
