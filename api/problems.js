@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   try {
     //クエリパラメータを取得
-    const { contest, min, max, problem } = req.query;
+    const { contest, min, max, problem, limit, random } = req.query;
 
     const contestType = contest ? contest.toLowerCase() : 'all';
     // コンテストタイプのバリデーション
@@ -39,6 +39,15 @@ export default async function handler(req, res) {
     if (isNaN(maxDifficulty)) {
       return res.status(400).json({ error: 'Invalid max difficulty value' });
     }
+
+    // limitのバリデーション
+    const limitCount = limit ? parseInt(limit, 10) : null;
+    if (limitCount !== null && (isNaN(limitCount) || limitCount <= 0)) {
+      return res.status(400).json({ error: 'Invalid limit value. Must be a positive integer.' });
+    }
+
+    // randomのパース
+    const isRandom = random === 'true' || random === '1';
 
     // データ取得
     const response = await fetch('https://kenkoooo.com/atcoder/resources/problem-models.json');
@@ -84,15 +93,41 @@ export default async function handler(req, res) {
       filteredProblems[problemId] = model;
     }
 
+    // オブジェクトを配列に変換
+    let problemsArray = Object.entries(filteredProblems).map(([id, model]) => ({
+      id,
+      ...model
+    }));
+
+    // ランダムシャッフル
+    if (isRandom) {
+      const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      };
+      problemsArray = shuffleArray(problemsArray);
+    }
+
+    // limit適用
+    if (limitCount !== null) {
+      problemsArray = problemsArray.slice(0, limitCount);
+    }
+
     return res.status(200).json({
       success: true,
-      contestType: type,
+      contestType: contestType,
+      problemType: problemType,
       filters: {
         minDifficulty,
-        maxDifficulty
+        maxDifficulty,
+        limit: limitCount,
+        random: isRandom
       },
-      data: filteredProblems,
-      count: Object.keys(filteredProblems).length
+      data: problemsArray,
+      count: problemsArray.length
     });
 
   } catch (error) {
