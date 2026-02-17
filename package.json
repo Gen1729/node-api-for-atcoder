@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Gen1729/node-api-for-atcoder/issues"
   },
-  "homepage": "https://github.com/Gen1729/node-api-for-atcoder#readme"
+  "homepage": "https://github.com/Gen1729/node-api-for-atcoder#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
