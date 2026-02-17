@@ -58,10 +58,10 @@ export default async function handler(req, res) {
     for (const [problemId, model] of Object.entries(problemModels)) {
       // コンテストタイプでフィルタリング（問題IDに含まれるかチェック）
       let matchesContest = false;
-      if (type === 'all') {
+      if (contestType === 'all') {
         matchesContest = true;
       } else {
-        matchesContest = problemId.toLowerCase().includes(type);
+        matchesContest = problemId.toLowerCase().includes(contestType);
       }
 
       if (!matchesContest) continue;
